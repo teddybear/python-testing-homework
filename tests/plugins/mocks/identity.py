@@ -12,13 +12,10 @@ if TYPE_CHECKING:
     from server.common.django.types import Settings
 
 
-DEFAULT_SEED = 0xFF
-
-
 @pytest.fixture()
 def lead_create_response():
     """Mock LeadResponse on creation."""
-    mf = Field(locale=Locale.RU, seed=DEFAULT_SEED)
+    mf = Field(locale=Locale.RU)
     return str(mf('numeric.increment'))
 
 
