@@ -1,8 +1,10 @@
 import dataclasses
 from http import HTTPStatus
-from django.urls import reverse
+
 import pytest
 from django.test import Client
+from django.urls import reverse
+
 from server.apps.identity.models import User
 
 
@@ -15,7 +17,11 @@ def test_login(client: Client) -> None:
 
 
 @pytest.mark.django_db()
-def test_registration(client: Client, mock_lead_create, user_registration_data) -> None:
+def test_registration(
+    client: Client,
+    mock_lead_create,
+    user_registration_data,
+) -> None:
     """Test ensures registration works."""
     user = user_registration_data
     response = client.post(
@@ -28,7 +34,12 @@ def test_registration(client: Client, mock_lead_create, user_registration_data) 
 
 
 @pytest.mark.django_db()
-def test_user_update(client: Client, mock_lead_update, user_factory, mimesis_field) -> None:
+def test_user_update(
+    client: Client,
+    mock_lead_update,
+    user_factory,
+    mimesis_field,
+) -> None:
     """Test ensures registration works."""
     lead_id = '2'
     user = user_factory(lead_id=int(lead_id))

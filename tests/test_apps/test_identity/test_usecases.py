@@ -37,8 +37,9 @@ def test_update_user_lead(user_factory, mock_lead_update):
     assert mock_lead_update.last_request().url.endswith(lead_id)
 
 
+@pytest.mark.usefixtures('_override_placeholder_api')
 @pytest.mark.django_db()
-def test_create_new_user_json_server(user_factory, _override_placeholder_api):
+def test_create_new_user_json_server(user_factory):
     """Test create new user with lead, real json server."""
     user_create_new = container.instantiate(UserCreateNew)
     user = user_factory()

@@ -1,5 +1,6 @@
-from django.test import Client
+# flake8: noqa
 import pytest
+from django.test import Client
 from mimesis import Field, Locale
 
 

@@ -30,8 +30,9 @@ def test_fetch_picture(mock_picture_fetch):
     assert len(fetched) == len(pics)
 
 
+@pytest.mark.usefixtures('_override_placeholder_api')
 @pytest.mark.django_db()
-def test_fetch_picture_json_server(_override_placeholder_api):
+def test_fetch_picture_json_server():
     """Test create new user with lead, real json server."""
     fetch = container.instantiate(PicturesFetch)
 

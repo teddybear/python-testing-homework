@@ -1,9 +1,9 @@
-import dataclasses
 from http import HTTPStatus
-from django.urls import reverse
+
 import pytest
 from django.test import Client
-from server.apps.identity.models import User
+from django.urls import reverse
+
 from server.apps.pictures.models import FavouritePicture
 
 
@@ -35,7 +35,7 @@ def test_dash_new_fav(authenticated_client: Client, mimesis_field) -> None:
         reverse('pictures:dashboard'),
         data={
             'foreign_id': foreign_id,
-            'url':  url,
+            'url': url,
         },
     )
     assert response.status_code == HTTPStatus.FOUND

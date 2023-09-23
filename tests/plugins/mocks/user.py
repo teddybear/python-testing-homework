@@ -1,15 +1,12 @@
-from mimesis import Field, Locale
+from dataclasses import dataclass
+
 import pytest
 from django_fakery.faker_factory import Factory
 from faker import Faker
-
-
-from server.apps.identity.models import User
-
-from dataclasses import dataclass
-
+from mimesis import Field, Locale
 from polyfactory.factories import DataclassFactory
 
+from server.apps.identity.models import User
 
 
 @pytest.fixture()
@@ -34,7 +31,9 @@ def user_factory(fakery: Factory[User], faker: Faker):
 
 
 @dataclass
-class UserData:
+class UserData(object):
+    """User Data."""
+
     email: str
     first_name: str
     last_name: str
@@ -46,25 +45,32 @@ class UserData:
 
 @dataclass
 class UserRegistration(UserData):
+    """User Registration."""
+
     password1: str
     password2: str
 
 
 class UserRegistrationFactory(DataclassFactory[User]):
+    """User Registration Factory."""
+
     __model__ = UserRegistration
     _faker = Field(Locale.RU)
 
     @classmethod
     def email(cls) -> str:
+        """Email override."""
         return cls._faker('email')
 
     @classmethod
     def date_of_birth(cls) -> str:
+        """Date of birth override."""
         return cls._faker('date')
 
 
 @pytest.fixture()
 def user_registration_data(mimesis_field) -> UserRegistration:
+    """User Registration Fixture."""
     pw = mimesis_field('password')
     return UserRegistrationFactory.build(
         password1=pw,
