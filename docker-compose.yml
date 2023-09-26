@@ -60,7 +60,6 @@ services:
       start_period: 30s
 
   json-server:
-    # image: "clue/json-server"
     build:
       dockerfile_inline: |
         FROM node:alpine
@@ -72,7 +71,7 @@ services:
     container_name: "json_server"
     ports:
       - "3000:3000"
-    restart: always
+    restart: unless-stopped
 
 # This task is an example of how to extend existing ones:
 #   some_worker:
