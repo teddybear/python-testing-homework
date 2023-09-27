@@ -19,7 +19,7 @@ def test_list_favs(user_favs_factory, user_factory):
 
 @pytest.mark.django_db()
 @pytest.mark.picture_fetch_limit_data(2)
-def test_create_new_user(mock_picture_fetch):
+def test_fetch_picture(mock_picture_fetch):
     """Test fetch picture."""
     fetch = container.instantiate(PicturesFetch)
 
@@ -28,3 +28,14 @@ def test_create_new_user(mock_picture_fetch):
     assert len(fetched) == 2
     pics = mock_picture_fetch
     assert len(fetched) == len(pics)
+
+
+@pytest.mark.usefixtures('_override_placeholder_api')
+@pytest.mark.django_db()
+def test_fetch_picture_json_server():
+    """Test create new user with lead, real json server."""
+    fetch = container.instantiate(PicturesFetch)
+
+    fetched = fetch(limit=1)
+
+    assert len(fetched) == 1

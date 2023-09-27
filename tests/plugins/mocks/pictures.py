@@ -12,7 +12,6 @@ from server.apps.pictures.models import FavouritePicture
 
 if TYPE_CHECKING:
     from server.common.django.types import Settings
-DEFAULT_SEED = 0xFF
 
 
 @pytest.fixture()
@@ -47,7 +46,7 @@ def user_favs_factory(
 def picture_response():
     """Mock PictureFetch response."""
     def factory(limit=1):
-        mf = Field(locale=Locale.RU, seed=DEFAULT_SEED)
+        mf = Field(locale=Locale.RU)
         return [
             {
                 'id': str(mf('numeric.increment')),
@@ -60,10 +59,8 @@ def picture_response():
 @pytest.fixture()
 def mock_picture_fetch(request, settings: 'Settings', picture_response):
     """Mock PictureFetch call."""
-    limit = 1
     marker = request.node.get_closest_marker('picture_fetch_limit_data')
-    if marker:
-        limit = marker.args[0]
+    limit = marker.args[0]
     resp = picture_response(limit=limit)
     with httpretty.enabled(allow_net_connect=False):
         httpretty.register_uri(
@@ -77,3 +74,12 @@ def mock_picture_fetch(request, settings: 'Settings', picture_response):
         )
         yield resp
         assert httpretty.has_request()
+
+
+@pytest.fixture()
+def _override_placeholder_api(settings: 'Settings'):
+    """Override PLACEHOLDER_API_URL to user json-server."""
+    before = settings.PLACEHOLDER_API_URL
+    settings.PLACEHOLDER_API_URL = 'http://localhost:3000/'
+    yield
+    settings.PLACEHOLDER_API_URL = before
